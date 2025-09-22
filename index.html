@@ -1,1 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미궁 부족 환각 계산기 (New UI)</title>
+    <style>
+        @font-face {
+            font-family: '박다현체';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/박다현체.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
 
+        body {
+            font-family: '박다현체', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
+        
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+        .input-group input {
+            flex: 1;
+            margin-top: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .input-group button {
+            width: auto;
+            margin-top: 0;
+            border-radius: 0 10px 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>미궁용 환각계산기</h1>
+
+        <div id="myPet">
+            <label for="name">펫 이름</label>
+            <div class="input-group">
+                <input type="text" id="name" placeholder="예: 얀기로">
+                <button type="button" id="search">🔍</button>
+            </div>
+            <label for="hp">내구력</label>
+            <input type="number" id="hp" placeholder="57">
+            <label for="atk">공격력</label>
+            <input type="number" id="atk" placeholder="12">
+            <label for="def">방어력</label>
+            <input type="number" id="def" placeholder="7">
+            <label for="agi">순발력</label>
+            <input type="number" id="agi" placeholder="6">
+            
+            <button type="button" id="calculate">계산하기</button>
+            
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>내구력</th>
+                            <th>공격력</th>
+                            <th>방어력</th>
+                            <th>순발력</th>
+                            <th>성장률 합</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- S랭크 정보가 여기에 동적으로 추가됩니다. -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="calculationResult" class="result" style="display: none;">
+            <!-- 계산 결과가 여기에 표시됩니다. -->
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="test.js"></script>
+    <script>
+        // 결과 영역에 내용이 추가될 때만 보이도록 설정
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    const resultDiv = $('#calculationResult');
+                    if(resultDiv.text().trim().length > 0) {
+                        resultDiv.show();
+                    }
+                }
+            });
+        });
+        observer.observe($('#calculationResult')[0], { childList: true, subtree: true });
+    </script>
+</body>
+</html>
